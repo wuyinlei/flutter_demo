@@ -3,12 +3,14 @@
 // This sample shows adding an action to an [AppBar] that opens a shopping cart.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/res_page.dart';
 import 'package:flutter_app/stateful_group_page.dart';
 
 import 'flutter_layout_page.dart';
 import 'flutter_plugin.dart';
 import 'gesture_page.dart';
 import 'less_group_page.dart';
+import 'open_third_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -30,7 +32,9 @@ class MyApp extends StatelessWidget {
         'plugin': (BuildContext context) => FlutterPluginPage(),
         'full': (BuildContext context) => StateFulGroupPage(),
         'layout': (BuildContext context) => FlutterLayoutGroupPage(),
-        'gesture': (BuildContext context) => GesturePage()
+        'gesture': (BuildContext context) => GesturePage(),
+        'res':(BuildContext context) => ResPage(),
+        'open':(BuildContext context) => ResPage(),
       },
     );
   }
@@ -63,7 +67,9 @@ class _RouterNavigatorState extends State<RouterNavigator> {
           _item('Flutter 包和插件的使用', FlutterPluginPage(), 'plugin'),
           _item('StatefuleWidget与基础组件', StateFulGroupPage(), 'full'),
           _item('如何进行Flutter布局开发', FlutterLayoutGroupPage(), 'layout'),
-          _item('如何检测用户手势以及处理点击事件', FlutterLayoutGroupPage(), 'gesture')
+          _item('如何检测用户手势以及处理点击事件', FlutterLayoutGroupPage(), 'gesture'),
+          _item('如何导入和使用Flutter的资源文件？', ResPage(), 'res'),
+          _item('如何打开第三方应用？', OpenThirdPage(), 'res')
         ],
       ),
     );
