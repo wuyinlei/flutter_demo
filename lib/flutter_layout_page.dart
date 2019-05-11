@@ -21,6 +21,12 @@ class _StateFulGroupState extends State<StatefulWidget> {
       home: Scaffold(
         appBar: AppBar(
           title: Text('如何进行Flutter布局开发'),
+          leading: GestureDetector(
+            onTap: (){
+              Navigator.pop(context);
+            },
+            child: Icon(Icons.arrow_back),
+          )
         ),
         //创建底部导航栏
         bottomNavigationBar: BottomNavigationBar(

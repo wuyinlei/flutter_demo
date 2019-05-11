@@ -4,11 +4,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/stateful_group_page.dart';
-import 'package:flutter_color_plugin/flutter_color_plugin.dart';
 
 import 'flutter_layout_page.dart';
+import 'flutter_plugin.dart';
+import 'gesture_page.dart';
 import 'less_group_page.dart';
-void main() => runApp(FlutterLayoutGroupPage());
+
+void main() => runApp(MyApp());
 
 /// This Widget is the main application widget.
 class MyApp extends StatelessWidget {
@@ -18,51 +20,68 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: _title,
-      home: LessGroupPage(),
+      home: Scaffold(
+          appBar: AppBar(
+            title: Text('如何创建和使用Flutter的路由和导航'),
+          ),
+          body: RouterNavigator()),
+      routes: <String, WidgetBuilder>{
+        'less': (BuildContext context) => LessGroupPage(),
+        'plugin': (BuildContext context) => FlutterPluginPage(),
+        'full': (BuildContext context) => StateFulGroupPage(),
+        'layout': (BuildContext context) => FlutterLayoutGroupPage(),
+        'gesture': (BuildContext context) => GesturePage()
+      },
     );
   }
 }
 
-/// This is the stateless widget that the main application instantiates.
-class MyStatelessWidget extends StatelessWidget {
-  MyStatelessWidget({Key key}) : super(key: key);
+class RouterNavigator extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _RouterNavigatorState();
+}
 
-  Color color = ColorUtil.color('98ee34');
+class _RouterNavigatorState extends State<RouterNavigator> {
+  bool byName = false;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Ready, Set, Shop!'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.shopping_cart),
-            tooltip: 'Open shopping cart',
-            onPressed: () {
-              // Implement navigation to shopping cart page here...
-              print('Shopping cart opened.');
+    // TODO: implement build
+    return Container(
+      child: Column(
+        children: <Widget>[
+          SwitchListTile(
+            title: Text('${byName ? '' : '不'}通过路由名跳转'),
+            value: byName,
+            onChanged: (value) {
+              setState(() {
+                byName = value;
+              });
             },
           ),
+          _item('StatelessWidget与基础组件', LessGroupPage(), 'less'),
+          _item('Flutter 包和插件的使用', FlutterPluginPage(), 'plugin'),
+          _item('StatefuleWidget与基础组件', StateFulGroupPage(), 'full'),
+          _item('如何进行Flutter布局开发', FlutterLayoutGroupPage(), 'layout'),
+          _item('如何检测用户手势以及处理点击事件', FlutterLayoutGroupPage(), 'gesture')
         ],
       ),
-      body:new Container(
-        padding: const EdgeInsets.all(60),
-        color: Colors.black26,
-        alignment: Alignment.center,
-        child:new Container(
-          constraints: BoxConstraints(
-            maxHeight: 200,
-            maxWidth: 100,
-            minHeight: 100,
-          ),
-          margin: EdgeInsets.all(20),
-          color: Colors.red,
-          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-          child: new Text("测试代码，其实我就是想测试一下",
-              style: new TextStyle(color:color,
-                  fontSize: 22,backgroundColor: Colors.amber)),
-        ),
-      )
+    );
+  }
+
+  _item(String title, page, String routeName) {
+    return Container(
+      child: RaisedButton(
+        onPressed: () {
+          if (byName) {
+            Navigator.pushNamed(context, routeName);
+          } else {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => page));
+          }
+        },
+        child: Text(title),
+      ),
     );
   }
 }
